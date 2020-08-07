@@ -9,7 +9,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=brlaser
-PKG_VERSION:=v3
+PKG_VERSION:=v7
 PKG_RELEASE:=1
 
 PKG_SOURCE_URL:=https://github.com/pdewacht/brlaser.git
@@ -23,12 +23,13 @@ PKG_FIXUP:=autoreconf
 PKG_INSTALL:=1
 
 include $(INCLUDE_DIR)/package.mk
+include $(INCLUDE_DIR)/cmake.mk
 
 define Package/brlaser
   SECTION:=print
   CATEGORY:=Printing and Imaging
   TITLE:=Driver for (some) Brother laster printers
-  DEPENDS:=+libcupsimage +libstdcpp
+  DEPENDS:=+libcupsimage +libstdcpp +cups-ppdc
   MAINTAINER:=Weijie Gao <hackpascal@gmail.com>
   URL:=https://github.com/pdewacht/brlaser
 endef
@@ -43,11 +44,6 @@ define Package/brlaser/install
 
 	$(INSTALL_DIR) $(1)/usr/share/cups/drv
 	$(INSTALL_DATA) $(PKG_INSTALL_DIR)/usr/share/cups/drv/brlaser.drv $(1)/usr/share/cups/drv/
-
-	(cd $(PKG_BUILD_DIR) && ppdc brlaser.drv)
-
-	$(INSTALL_DIR) $(1)/usr/share/ppd/Brother
-	$(CP) $(PKG_BUILD_DIR)/ppd/*.ppd $(1)/usr/share/ppd/Brother
 
 	$(INSTALL_DIR) $(1)/etc/uci-defaults
 	$(INSTALL_BIN) ./files/brlaser-set-cups-filter-permission $(1)/etc/uci-defaults/
