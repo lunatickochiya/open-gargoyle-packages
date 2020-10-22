@@ -8,12 +8,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libsodium
-PKG_VERSION:=1.0.2
+PKG_VERSION:=1.0.10
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://download.libsodium.org/libsodium/releases/old/unsupported
-PKG_MD5SUM:=dc40eb23e293448c6fc908757738003f
+PKG_MD5SUM:=b58928d035064b2a46fb564937b83540
 
 PKG_FIXUP:=libtool autoreconf
 PKG_USE_MIPS16:=0
@@ -52,6 +52,7 @@ endef
 
 CONFIGURE_ARGS+= \
 	--disable-ssp \
+	--without-pthreads \
 	$(if $(CONFIG_LIBSODIUM_MINIMAL),--enable-minimal=yes,--enable-minimal=no)
 
 define Build/InstallDev
