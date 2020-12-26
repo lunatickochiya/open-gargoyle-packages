@@ -7,8 +7,8 @@
 
 include $(TOPDIR)/rules.mk
 
-GO_VERSION_MAJOR_MINOR:=1.14
-GO_VERSION_PATCH:=7
+GO_VERSION_MAJOR_MINOR:=1.15
+GO_VERSION_PATCH:=6
 
 PKG_NAME:=golang
 PKG_VERSION:=$(GO_VERSION_MAJOR_MINOR)$(if $(GO_VERSION_PATCH),.$(GO_VERSION_PATCH))
@@ -20,7 +20,7 @@ GO_SOURCE_URLS:=https://dl.google.com/go/ \
 
 PKG_SOURCE:=go$(PKG_VERSION).src.tar.gz
 PKG_SOURCE_URL:=$(GO_SOURCE_URLS)
-PKG_HASH:=064392433563660c73186991c0a315787688e7c38a561e26647686f89b6c30e3
+PKG_HASH:=890bba73c5e2b19ffb1180e385ea225059eb008eb91b694875dd86ea48675817
 
 PKG_LICENSE:=BSD-3-Clause
 PKG_LICENSE_FILES:=LICENSE
@@ -51,15 +51,15 @@ HOST_GO_ROOT:=$(HOST_GO_PREFIX)/lib/go-$(HOST_GO_VERSION_ID)
 
 HOST_GO_VALID_OS_ARCH:= \
   android_386  android_amd64  android_arm  android_arm64 \
-  darwin_386   darwin_amd64   darwin_arm   darwin_arm64 \
   freebsd_386  freebsd_amd64  freebsd_arm  freebsd_arm64 \
   linux_386    linux_amd64    linux_arm    linux_arm64 \
+  openbsd_386  openbsd_amd64  openbsd_arm  openbsd_arm64 \
   \
-  openbsd_386  openbsd_amd64  openbsd_arm \
   netbsd_386   netbsd_amd64   netbsd_arm \
   plan9_386    plan9_amd64    plan9_arm \
+  windows_386  windows_amd64  windows_arm \
   \
-  windows_386  windows_amd64 \
+  darwin_amd64 darwin_arm64 \
   \
   dragonfly_amd64 \
   illumos_amd64 \
