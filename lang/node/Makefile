@@ -29,7 +29,7 @@ PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.xz
 PKG_SOURCE_URL:=http://nodejs.org/dist/${PKG_VERSION}
 
 HOST_BUILD_DEPENDS:=python/host
-PKG_BUILD_DEPENDS:=python/host
+PKG_BUILD_DEPENDS:=python/host upx/host
 PKG_INSTALL:=1
 PKG_USE_MIPS16:=0
 
@@ -142,7 +142,7 @@ endef
 define Build/Install
 $(call Build/Install/Default)
 ifeq ($(CONFIG_NODEJS_UPX),y)
-	upx --lzma --best $(PKG_INSTALL_DIR)/usr/bin/node
+	$(STAGING_DIR_HOST)/bin/upx --lzma --best $(PKG_INSTALL_DIR)/usr/bin/node
 endif
 endef
 
