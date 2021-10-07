@@ -8,15 +8,19 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=snort
-PKG_VERSION:=2.9.7.2
-PKG_RELEASE:=2
+PKG_VERSION:=2.9.11.1
+PKG_RELEASE:=8
+
+PKG_LICENSE:=GPL-2.0
+PKG_MAINTAINER:=W. Michael Petullo <mike@flyn.org>
+PKG_CPE_ID:=cpe:/a:snort:snort
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=https://www.snort.org/downloads/archive/snort/ \
+PKG_SOURCE_URL:=https://www.snort.org/downloads/snort/ \
 	@SF/$(PKG_NAME)
-PKG_MD5SUM:=b01e9964827394c39194a0147bc15705
+PKG_HASH:=9f6b3aeac5a109f55504bd370564ac431cb1773507929dc461626898f33f46cd
 
-PKG_BUILD_DEPENDS:=librpc
+PKG_BUILD_DEPENDS:=libtirpc
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)/$(PKG_NAME)-$(PKG_VERSION)
 PKG_FIXUP:=autoreconf
 PKG_INSTALL:=1
@@ -27,7 +31,7 @@ define Package/snort
   SUBMENU:=Firewall
   SECTION:=net
   CATEGORY:=Network
-  DEPENDS:=+libdaq +libdnet +libopenssl +libpcap +libpcre +libpthread +libuuid +zlib +SNORT_MYSQL:libmysqlclient +SNORT_PGSQL:libpq +SNORT_PGSQL:libuuid +SNORT_LZMA:liblzma
+  DEPENDS:=+libdaq +libdnet +libnghttp2 +libopenssl +libpcap +libpcre +libpthread +libuuid +zlib +SNORT_LZMA:liblzma
   TITLE:=Lightweight Network Intrusion Detection System
   URL:=http://www.snort.org/
   MENU:=1
@@ -58,28 +62,18 @@ CONFIGURE_ARGS += \
 	--with-daq-libraries="$(STAGING_DIR)/usr/lib" \
 	--disable-static-daq
 
-ifeq ($(CONFIG_SNORT_MYSQL),)
-CONFIGURE_ARGS += \
-	--without-mysql
-endif
-
-ifeq ($(CONFIG_PGSQL),)
-CONFIGURE_ARGS += \
-	--without-postgresql
-endif
-
 ifeq ($(CONFIG_SNORT_LZMA),)
 CONFIGURE_ARGS += \
 	--disable-lzma
 endif
 
 CONFIGURE_VARS += \
-	CPPFLAGS="$$$$CPPFLAGS -I$(STAGING_DIR)/usr/include/mysql" \
-	LDFLAGS="$$$$LDFLAGS -L$(STAGING_DIR)/usr/lib/mysql" \
 	PATH="$(STAGING_DIR)/usr/lib/libnet-1.0.x/bin:$$$$PATH"
 
 MAKE_FLAGS += \
 	extra_incl=""
+	
+TARGET_CFLAGS += -I$(STAGING_DIR)/usr/include/tirpc
 
 define Build/InstallDev
 	$(INSTALL_DIR) $(STAGING_DIR)/usr/include/snort/dynamic_preproc
